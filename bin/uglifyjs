@@ -308,6 +308,15 @@ var TOPLEVEL = null;
 var P_RELATIVE = ARGS.p && ARGS.p == "relative";
 var SOURCES_CONTENT = {};
 
+// If there's an input sourcemap and it has source content, use it.
+if (ORIG_MAP && ORIG_MAP.sourcesContent && ORIG_MAP.sourcesContent.length > 0) {
+    ORIG_MAP.sourcesContent.forEach(function(code, sourceIndex) {
+        if (!code)
+            return;
+        SOURCES_CONTENT[ORIG_MAP.sources[sourceIndex]] = code;
+    });
+}
+
 var SOURCE_MAP = ARGS.source_map ? UglifyJS.SourceMap({
     file: P_RELATIVE ? path.relative(path.dirname(ARGS.source_map), OUTPUT_FILE) : OUTPUT_FILE,
     root: ARGS.source_map_root,
